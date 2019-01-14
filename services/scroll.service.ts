@@ -6,28 +6,27 @@ export class ScrollService {
 
     private startScrollTop = 0;
     private endScrollTop = 1;
-    
-    public scrollToElement(): void {
-        // todo: code here
-    }
 
     public scrollToId(elementId: string): void {
         const element: Element | null = document.querySelector(`#${elementId}`);
         if (element instanceof HTMLElement) {
-            const elemRect: ClientRect = element.getBoundingClientRect();
-            this.startTime = performance.now();
-            this.scrollTime = Math.abs(elemRect.top) / 2;
-            let scrollTop = document.documentElement!.scrollTop;
-            scrollTop = scrollTop === 0 ? document.body.scrollTop : scrollTop;
-            this.startScrollTop = scrollTop;
-            this.endScrollTop = this.startScrollTop + elemRect.top;
-
-            this.animateScroll();
+            this.scrollToElement(element);
         }
-
     }
 
-    private animateScroll() {
+    public scrollToElement(element: Element): void {
+        const elemRect: ClientRect = element.getBoundingClientRect();
+        this.startTime = performance.now();
+        this.scrollTime = Math.abs(elemRect.top) / 2;
+        let scrollTop = document.documentElement!.scrollTop;
+        scrollTop = scrollTop === 0 ? document.body.scrollTop : scrollTop;
+        this.startScrollTop = scrollTop;
+        this.endScrollTop = this.startScrollTop + elemRect.top;
+
+        this.animateScroll();
+    }
+
+    protected animateScroll() {
         let t: number = (performance.now() - this.startTime) / this.scrollTime;
         t = t > 1 ? 1 : t;
         const p0: number = this.startScrollTop;

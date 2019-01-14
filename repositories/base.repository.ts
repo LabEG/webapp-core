@@ -1,4 +1,6 @@
 import { NetError } from "../models/errors/net.error";
+import { Serializable } from "ts-serializable";
+import { BackError } from '../models/errors/back.error';
 
 export type RepositoryMethod = "HEAD" | "GET" | "POST" | "DELETE" | "PUT";
 
@@ -31,9 +33,9 @@ export abstract class BaseRepository {
 
         // *** process request
         const headers = new Headers();
-        if (this.config.isFakeAuth) {
-            headers.set("Authorization", `Basic ${btoa(`${environment.fakeLogin}:${environment.fakePassword}`)}`);
-        }
+        // if (this.config.isFakeAuth) {
+        //     headers.set("Authorization", `Basic ${btoa(`${environment.fakeLogin}:${environment.fakePassword}`)}`);
+        // }
         headers.set("content-type", "application/json");
 
         let primitive = "";
@@ -106,7 +108,7 @@ export abstract class BaseRepository {
         return data as T;
     }
 
-    protected async customRequestAsT<T extends BaseModel>(
+    protected async customRequestAsT<T extends Serializable>(
         type: RepositoryMethod,
         url: string,
         body: object | void,
@@ -121,7 +123,7 @@ export abstract class BaseRepository {
         throw new NetError(`Wrong returned type. Must by ${typeof modelConstructor} but return ${model}`);
     }
 
-    protected async customRequestAsArrayT<T extends BaseModel>(
+    protected async customRequestAsArrayT<T extends Serializable>(
         type: RepositoryMethod,
         url: string,
         body: object | void,
@@ -156,12 +158,8 @@ export abstract class BaseRepository {
 
             } else if (body.indexOf("{") === 0) { // backend response
 
-                const backError: IBackErrorBody = JSON.parse(body);
-                if (backError.fields) {
-                    error = new BackError(`${response.status} - ${backError.errorCode}: ${backError.diagnosticMessage}: ${backError.fields.join(",")}`);
-                } else {
-                    error = new BackError(`${response.status} - ${backError.errorCode}: ${backError.diagnosticMessage}`);
-                }
+                // todo: improve
+                error = new NetError("Authorization exception");
 
             } else {
                 error = new NetError(response.status + " - " + response.statusText);

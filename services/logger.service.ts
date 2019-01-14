@@ -1,26 +1,18 @@
-
-import {LogLevels} from "../models/enums/log-levels";
-import {Config} from "../config";
-import * as alertify from "alertify.js";
-import {environment} from "../../environments/environment";
-import {ClientError} from "../models/view-models/client-error.vm";
-import {BackError, NetError} from "../repositories/base/base.repository";
+import { ClientError } from "../models/view-models/client-error.vm";
+import { NetError } from "../models/errors/net.error";
+import { BackError } from "../models/errors/back.error";
+import { LogLevels } from "../models/enums/log-levels.enum";
 
 export class LoggerService {
-
     public readonly events: HTMLElement = document.createElement("div");
 
     private logLevel: LogLevels = LogLevels.ERROR;
 
-    private readonly config: Config;
+    // private readonly config: Config;
 
-    constructor(config: Config) {
-        this.config = config;
-        this.logLevel = this.config.logLevel;
-
-        alertify
-            .maxLogItems(10)
-            .logPosition("top right");
+    constructor() {
+        // this.config = config;
+        // this.logLevel = this.config.logLevel;
     }
 
     public log(message: string, logLevel: LogLevels = LogLevels.INFO) {
@@ -37,7 +29,11 @@ export class LoggerService {
         }
     }
 
-    public error(message: string, error?: Error, logLevel: LogLevels = LogLevels.ERROR) {
+    public error(
+        message: string,
+        error?: Error,
+        logLevel: LogLevels = LogLevels.ERROR
+    ) {
         if (logLevel <= this.logLevel) {
             console.error(message, error);
             this.showModalWithError(message, error, logLevel);
@@ -45,23 +41,26 @@ export class LoggerService {
     }
 
     private showModalWithError(message: string, error?: Error, logLevel: LogLevels = LogLevels.ERROR): void {
-
         if (error && error instanceof NetError && error.status === 401) {
-            window.location.href = environment.loginUrl;
+            // window.location.href = environment.loginUrl;
             return;
         }
 
         const clientError: ClientError = new ClientError();
 
         if (error) {
-            clientError.message = "Ошибка в " + message + ": " + error.name + " " + error.message;
+            clientError.message =
+                "Ошибка в " + message + ": " + error.name + " " + error.message;
         } else {
             clientError.message = "Ошибка в " + message;
         }
 
-        clientError.error = JSON.stringify(error, Object.getOwnPropertyNames(error));
+        clientError.error = JSON.stringify(
+            error,
+            Object.getOwnPropertyNames(error)
+        );
 
-        if (error && error instanceof NetError || error instanceof BackError) {
+        if ((error && error instanceof NetError) || error instanceof BackError) {
             clientError.errorBody = error.body;
         }
 
@@ -78,11 +77,14 @@ export class LoggerService {
             errorType = "updateserver";
         }
 
-        if (environment.production) {
-            this.events.dispatchEvent(new CustomEvent(errorType, {detail: {text: JSON.stringify(clientError)}}));
-        } else {
-            alertify.error(clientError.message);
-        }
+        // if (environment.production) {
+        //     this.events.dispatchEvent(
+        //         new CustomEvent(errorType, {
+        //             detail: { text: JSON.stringify(clientError) }
+        //         })
+        //     );
+        // } else {
+        //     alertify.error(clientError.message);
+        // }
     }
-
 }
