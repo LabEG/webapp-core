@@ -1,11 +1,19 @@
 {
-  "name": "app-core-ts",
-  "version": "1.0.0",
+  "name": "webapps-core",
+  "version": "0.0.1",
   "description": "Core classes for building app logic",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LabEG/webapps-core.git"
+  },
   "author": "Labutin Evgeniy",
-  "license": "MIT"
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/LabEG/webapps-core/issues"
+  },
+  "homepage": "https://github.com/LabEG/webapps-core#readme"
 }
