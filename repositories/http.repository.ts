@@ -1,15 +1,15 @@
-import { NetError } from "../models/errors/net.error";
-import { Serializable } from "ts-serializable";
-import { BackError } from '../models/errors/back.error';
+import {NetError} from "../models/errors/net.error";
+import {Serializable} from "ts-serializable";
+import {BackError} from '../models/errors/back.error';
 
 export type RepositoryMethod = "HEAD" | "GET" | "POST" | "DELETE" | "PUT";
 
-export abstract class BaseRepository {
+export abstract class HttpRepository {
 
     protected abstract apiRoot: string;
 
     // cache for all get and head request
-    private readonly requestCache: Map<string, [Function, Function][]> = new Map<string, [Function, Function][]>();
+    protected readonly requestCache: Map<string, [Function, Function][]> = new Map<string, [Function, Function][]>();
 
     protected async customRequest<T>(
         type: RepositoryMethod,
@@ -32,12 +32,7 @@ export abstract class BaseRepository {
         }
 
         // *** process request
-        const headers = new Headers();
-        // if (this.config.isFakeAuth) {
-        //     headers.set("Authorization", `Basic ${btoa(`${environment.fakeLogin}:${environment.fakePassword}`)}`);
-        // }
-        headers.set("content-type", "application/json");
-
+        const headers = this.setHeaders();
         let primitive = "";
         try {
             let response = await fetch(
@@ -47,7 +42,6 @@ export abstract class BaseRepository {
                     body: typeof body !== "undefined" ? JSON.stringify(body) : void 0,
                     headers: headers,
                     credentials: "include"
-                    // mode: "cors" // todo: uncomment and move to environment if needed
                 }
             );
             response = await this.handleError(response);
@@ -58,7 +52,7 @@ export abstract class BaseRepository {
                     try {
                         tuple[1](e);
                     } catch (e) {
-                        // nothing
+                        console.error(e);
                     }
                 });
                 this.requestCache.delete(cacheKey);
@@ -86,7 +80,7 @@ export abstract class BaseRepository {
                     try {
                         tuple[1](error);
                     } catch (e) {
-                        // nothing
+                        console.error(e);
                     }
                 });
                 this.requestCache.delete(cacheKey);
@@ -100,7 +94,7 @@ export abstract class BaseRepository {
                 try {
                     tuple[0](data as T);
                 } catch (e) {
-                    // nothing
+                    console.error(e);
                 }
             });
             this.requestCache.delete(cacheKey);
@@ -158,8 +152,7 @@ export abstract class BaseRepository {
 
             } else if (body.indexOf("{") === 0) { // backend response
 
-                // todo: improve
-                error = new NetError("Authorization exception");
+                error = this.parseBackendError(response, body);
 
             } else {
                 error = new NetError(response.status + " - " + response.statusText);
@@ -170,6 +163,19 @@ export abstract class BaseRepository {
 
             throw error;
         }
+    }
+
+    protected setHeaders(): Headers {
+        const headers = new Headers();
+        headers.set("content-type", "application/json");
+        return headers;
+    }
+
+    protected parseBackendError(response: Response, body: string): BackError {
+
+        // todo: check on message property
+
+        return new BackError(`${response.status} - ${response.statusText}`);
     }
 
 }

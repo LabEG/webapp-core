@@ -4,16 +4,11 @@ import { BackError } from "../models/errors/back.error";
 import { LogLevels } from "../models/enums/log-levels.enum";
 
 export class LoggerService {
+
     public readonly events: HTMLElement = document.createElement("div");
 
-    private logLevel: LogLevels = LogLevels.ERROR;
-
-    // private readonly config: Config;
-
-    constructor() {
-        // this.config = config;
-        // this.logLevel = this.config.logLevel;
-    }
+    public logLevel: LogLevels = LogLevels.ERROR;
+    public loginUrl: string | null = null;
 
     public log(message: string, logLevel: LogLevels = LogLevels.INFO) {
         if (logLevel <= this.logLevel) {
@@ -29,11 +24,7 @@ export class LoggerService {
         }
     }
 
-    public error(
-        message: string,
-        error?: Error,
-        logLevel: LogLevels = LogLevels.ERROR
-    ) {
+    public error(message: string, error?: Error, logLevel: LogLevels = LogLevels.ERROR) {
         if (logLevel <= this.logLevel) {
             console.error(message, error);
             this.showModalWithError(message, error, logLevel);
@@ -41,8 +32,8 @@ export class LoggerService {
     }
 
     private showModalWithError(message: string, error?: Error, logLevel: LogLevels = LogLevels.ERROR): void {
-        if (error && error instanceof NetError && error.status === 401) {
-            // window.location.href = environment.loginUrl;
+        if (error && error instanceof NetError && error.status === 401 && this.loginUrl) {
+            window.location.href = this.loginUrl;
             return;
         }
 
@@ -72,10 +63,10 @@ export class LoggerService {
         delete varNavigator.mimeTypes;
         clientError.browser = JSON.stringify(varNavigator);
 
-        let errorType: string = "error";
-        if (error instanceof NetError && error.status === 503) {
-            errorType = "updateserver";
-        }
+        // let errorType: string = "error";
+        // if (error instanceof NetError && error.status === 503) {
+        //     errorType = "updateserver";
+        // }
 
         // if (environment.production) {
         //     this.events.dispatchEvent(
