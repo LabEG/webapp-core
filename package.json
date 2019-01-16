@@ -1,6 +1,6 @@
 {
   "name": "webapps-core",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Core classes for building app logic",
   "main": "index.js",
   "scripts": {
@@ -18,6 +18,6 @@
   "homepage": "https://github.com/LabEG/webapps-core#readme",
   "dependencies": {
     "ts-serializable": "^1.1.5",
-    "tslib": "=1.9.3"
+    "tslib": "^1.9.3"
   }
 }
