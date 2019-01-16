@@ -1,11 +1,11 @@
 
 export class ScrollService {
 
-    private startTime = performance.now();
-    private scrollTime = 500;
+    protected startTime = performance.now();
+    protected scrollTime = 500;
 
-    private startScrollTop = 0;
-    private endScrollTop = 1;
+    protected startScrollTop = 0;
+    protected endScrollTop = 1;
 
     public scrollToId(elementId: string): void {
         const element: Element | null = document.querySelector(`#${elementId}`);

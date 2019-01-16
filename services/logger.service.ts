@@ -56,7 +56,15 @@ export class LoggerService {
         delete varNavigator.mimeTypes;
         clientError.browser = JSON.stringify(varNavigator);
 
-        this.events.dispatchEvent(new CustomEvent("error", { detail: { text: JSON.stringify(clientError) } }));
+        this.events.dispatchEvent(new CustomEvent<ILoggerDetail>(
+            "error",
+            {
+                detail: {
+                    error: error,
+                    clientError: clientError
+                }
+            })
+        );
         this.sendClientError(clientError);
     }
 
@@ -64,4 +72,9 @@ export class LoggerService {
         // todo: overide and process client error, example send to server or show modal with error
     }
 
+}
+
+export interface ILoggerDetail {
+    error: Error | void,
+    clientError: ClientError
 }
