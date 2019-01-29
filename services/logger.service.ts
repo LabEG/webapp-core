@@ -56,6 +56,8 @@ export class LoggerService {
         delete varNavigator.mimeTypes;
         clientError.browser = JSON.stringify(varNavigator);
 
+        clientError.updateHashes();
+
         this.events.dispatchEvent(new CustomEvent<ILoggerDetail>(
             "error",
             {
