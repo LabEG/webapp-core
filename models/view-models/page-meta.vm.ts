@@ -1,4 +1,4 @@
-import { jsonProperty, Serializable } from 'ts-serializable';
+import { jsonProperty, Serializable } from "ts-serializable";
 
 export class PageMeta extends Serializable {
 

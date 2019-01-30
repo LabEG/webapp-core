@@ -18,7 +18,7 @@ export class ScrollService {
         const elemRect: ClientRect = element.getBoundingClientRect();
         this.startTime = performance.now();
         this.scrollTime = Math.abs(elemRect.top) / 2;
-        let scrollTop = document.documentElement!.scrollTop;
+        let scrollTop = document.documentElement.scrollTop;
         scrollTop = scrollTop === 0 ? document.body.scrollTop : scrollTop;
         this.startScrollTop = scrollTop;
         this.endScrollTop = this.startScrollTop + elemRect.top;

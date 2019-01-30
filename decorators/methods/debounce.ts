@@ -7,7 +7,7 @@ export function debounce(timeout: number = 500) {
         return {
             configurable: true,
             enumerable: descriptor.enumerable,
-            value: function(...arg: Object[]) {
+            value(...arg: Object[]) {
 
                 if (timeOut) {
                     clearTimeout(timeOut);
@@ -16,6 +16,7 @@ export function debounce(timeout: number = 500) {
                 timeOut = window.setTimeout(
                     () => {
                         timeOut = null;
+                        // tslint:disable-next-line:no-invalid-this
                         descriptor.value.apply(this, arg);
                     },
                     timeout

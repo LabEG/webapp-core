@@ -1,4 +1,4 @@
-import { IGraphQuery } from './graph-query.vm';
+import { IGraphQuery } from "./graph-query.vm";
 
 export enum PageListQueryFilterMethod {
     Less,
@@ -11,9 +11,9 @@ export enum PageListQueryFilterMethod {
 }
 
 export class PageListQueryFilter {
-    public property: string = '';
+    public property: string = "";
     public method?: PageListQueryFilterMethod = PageListQueryFilterMethod.Equal;
-    public value: string | number = '';
+    public value: string | number = "";
 
     constructor(property: string, value: string | number, method: PageListQueryFilterMethod = PageListQueryFilterMethod.Equal) {
         this.property = property;
@@ -28,7 +28,7 @@ export enum PageListQuerySortDirection {
 }
 
 export class PageListQuerySort {
-    public property: string = '';
+    public property: string = "";
     public direction?: PageListQuerySortDirection = PageListQuerySortDirection.Asc;
 
     constructor(property: string, direction: PageListQuerySortDirection = PageListQuerySortDirection.Asc) {

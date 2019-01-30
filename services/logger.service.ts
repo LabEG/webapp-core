@@ -32,13 +32,7 @@ export class LoggerService {
         const clientError: ClientError = new ClientError(message, error);
 
         this.events.dispatchEvent(new CustomEvent<ILoggerDetail>(
-            "error",
-            {
-                detail: {
-                    error: error,
-                    clientError: clientError
-                }
-            })
+            "error", { detail: { error, clientError } })
         );
 
         this.sendClientError(clientError);
@@ -52,6 +46,6 @@ export class LoggerService {
 }
 
 export interface ILoggerDetail {
-    error: Error | void,
-    clientError: ClientError
+    error: Error | void;
+    clientError: ClientError;
 }

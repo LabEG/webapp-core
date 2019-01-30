@@ -1,7 +1,7 @@
 import { Serializable } from "ts-serializable";
-import { IGraphQuery } from '../models/view-models/graph-query.vm';
-import { PageListQuery } from '../models/view-models/page-list-query.vm';
-import { PagedList } from '../models/view-models/paged-list.vm';
+import { IGraphQuery } from "../models/view-models/graph-query.vm";
+import { PageListQuery } from "../models/view-models/page-list-query.vm";
+import { PagedList } from "../models/view-models/paged-list.vm";
 
 export interface ICrudRepository<T1 extends Serializable> {
 

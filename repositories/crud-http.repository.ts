@@ -1,9 +1,9 @@
-import { HttpRepository } from './http.repository';
-import { ICrudRepository } from './icrud.repository';
-import { Serializable } from 'ts-serializable';
-import { IGraphQuery } from '../models/view-models/graph-query.vm';
-import { PageListQuery } from '../models/view-models/page-list-query.vm';
-import { PagedList } from '../models/view-models/paged-list.vm';
+import { HttpRepository } from "./http.repository";
+import { ICrudRepository } from "./icrud.repository";
+import { Serializable } from "ts-serializable";
+import { IGraphQuery } from "../models/view-models/graph-query.vm";
+import { PageListQuery } from "../models/view-models/page-list-query.vm";
+import { PagedList } from "../models/view-models/paged-list.vm";
 
 export abstract class CrudHttpRepository<T1 extends Serializable> extends HttpRepository implements ICrudRepository<T1> {
 
@@ -47,6 +47,5 @@ export abstract class CrudHttpRepository<T1 extends Serializable> extends HttpRe
     public async getPaged(...keys: (string | number | PageListQuery)[]): Promise<PagedList<T1>> {
         throw new Error("Method not implemented.");
     }
-
 
 }

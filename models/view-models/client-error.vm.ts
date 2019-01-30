@@ -1,5 +1,5 @@
-import { NetError } from 'models/errors/net.error';
-import { BackError } from 'models/errors/back.error';
+import { NetError } from "./../../models/errors/net.error";
+import { BackError } from "./../../models/errors/back.error";
 
 export class ClientError {
     public message: string | null = null;
@@ -34,11 +34,13 @@ export class ClientError {
         this.errorHash = this.hashCode(this.error || "");
     }
 
-    protected hashCode(string: string): number {
-        var hash = 0, i, chr;
-        if (string.length === 0) return hash;
-        for (i = 0; i < string.length; i++) {
-            chr = string.charCodeAt(i);
+    protected hashCode(text: string): number {
+        let hash = 0;
+        let i = 0;
+        let chr = 0;
+        if (text.length === 0) { return hash; }
+        for (i = 0; i < text.length; i += 1) {
+            chr = text.charCodeAt(i);
             hash = ((hash << 5) - hash) + chr;
             hash |= 0; // Convert to 32bit integer
         }
@@ -59,9 +61,11 @@ export class ClientError {
     protected fillBrowser(): void {
         // navigator serialize
         const varNavigator: { [key: string]: object } = {};
+        /* tslint:disable:rule1 rule2 rule3... */
         for (const i in navigator) {
             varNavigator[i] = (navigator as any)[i];
         }
+        /* tslint:enable:rule1 rule2 rule3... */
         delete varNavigator.plugins;
         delete varNavigator.mimeTypes;
         this.browser = JSON.stringify(varNavigator);

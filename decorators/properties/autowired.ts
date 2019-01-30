@@ -1,7 +1,7 @@
 
 export function autowired(target: object, propertyKey: string | symbol): void {
 
-    const type: new () => object = (Reflect as any).getMetadata('design:type', target, propertyKey);
+    const type: new () => object = (Reflect as any).getMetadata("design:type", target, propertyKey);
 
     Object.defineProperty(
         target,
