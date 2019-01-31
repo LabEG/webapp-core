@@ -8,6 +8,7 @@ export class LoggerService {
 
     public log(message: string, logLevel: LogLevels = LogLevels.INFO) {
         if (logLevel <= this.logLevel) {
+            // tslint:disable-next-line:no-console
             console.log(message);
             this.processError(message, void 0, logLevel);
         }
@@ -15,6 +16,7 @@ export class LoggerService {
 
     public warning(message: string, logLevel: LogLevels = LogLevels.WARN) {
         if (logLevel <= this.logLevel) {
+            // tslint:disable-next-line:no-console
             console.warn(message);
             this.processError(message, void 0, logLevel);
         }
@@ -22,6 +24,7 @@ export class LoggerService {
 
     public error(message: string, error?: Error, logLevel: LogLevels = LogLevels.ERROR) {
         if (logLevel <= this.logLevel) {
+            // tslint:disable-next-line:no-console
             console.error(message, error);
             this.processError(message, error, logLevel);
         }

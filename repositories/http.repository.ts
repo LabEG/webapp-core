@@ -53,6 +53,7 @@ export abstract class HttpRepository {
                     try {
                         tuple[1](e);
                     } catch (e) {
+                        // tslint:disable-next-line:no-console
                         console.error(e);
                     }
                 });
@@ -81,6 +82,7 @@ export abstract class HttpRepository {
                     try {
                         tuple[1](error);
                     } catch (e) {
+                        // tslint:disable-next-line:no-console
                         console.error(e);
                     }
                 });
@@ -95,6 +97,7 @@ export abstract class HttpRepository {
                 try {
                     tuple[0](data as T);
                 } catch (e) {
+                    // tslint:disable-next-line:no-console
                     console.error(e);
                 }
             });
@@ -139,14 +142,14 @@ export abstract class HttpRepository {
             } else if (body.indexOf("<") === 0) { // java xml response
 
                 const match: RegExpMatchArray | null = /<b>description<\/b> <u>(.+?)<\/u>/g.exec(body);
-                error = new NetError(response.status + " - " + (match && match[1] || response.statusText || "Ошибка не указана"));
+                error = new NetError(`${response.status} - ${(match && match[1] || response.statusText || "Ошибка не указана")}`);
 
             } else if (body.indexOf("{") === 0) { // backend response
 
                 error = this.parseBackendError(response, body);
 
             } else {
-                error = new NetError(response.status + " - " + response.statusText);
+                error = new NetError(`${response.status} - ${response.statusText}`);
             }
 
             error.status = response.status;

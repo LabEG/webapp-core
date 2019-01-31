@@ -1,6 +1,6 @@
 {
   "name": "webapps-core",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Core classes for building app logic",
   "main": "index.js",
   "scripts": {
@@ -26,7 +26,7 @@
   },
   "devDependencies": {
     "typescript": "^3.2.4",
-    "@labeg/code-style": "1.0.1",
+    "@labeg/code-style": "1.0.3",
     "tslint": "^5.12.1"
   }
 }

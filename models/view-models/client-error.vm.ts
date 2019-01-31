@@ -14,14 +14,9 @@ export class ClientError {
         message: string | null = null,
         error: Error | null = null
     ) {
-
-        if (error) {
-            message = "Ошибка в " + message + ": " + error.name + " " + error.message;
-        } else {
-            message = "Ошибка в " + message;
-        }
-
-        this.message = message;
+        this.message = error ?
+            `Ошибка в ${message}: ${error.name} ${error.message}` :
+            `Ошибка в ${message}`;
         this.fillBrowser();
         if (error) {
             this.fillError(error);
@@ -61,11 +56,11 @@ export class ClientError {
     protected fillBrowser(): void {
         // navigator serialize
         const varNavigator: { [key: string]: object } = {};
-        /* tslint:disable:rule1 rule2 rule3... */
+        // tslint:disable-next-line:forin
         for (const i in navigator) {
+            // tslint:disable-next-line:no-any
             varNavigator[i] = (navigator as any)[i];
         }
-        /* tslint:enable:rule1 rule2 rule3... */
         delete varNavigator.plugins;
         delete varNavigator.mimeTypes;
         this.browser = JSON.stringify(varNavigator);

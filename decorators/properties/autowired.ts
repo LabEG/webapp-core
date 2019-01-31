@@ -1,6 +1,7 @@
 
 export function autowired(target: object, propertyKey: string | symbol): void {
 
+    // tslint:disable-next-line:no-any
     const type: new () => object = (Reflect as any).getMetadata("design:type", target, propertyKey);
 
     Object.defineProperty(
