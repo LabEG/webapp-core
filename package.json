@@ -1,5 +1,5 @@
 {
-  "name": "webapps-core",
+  "name": "@labeg/webapp-core",
   "version": "0.1.7",
   "description": "Core classes for building app logic",
   "main": "index.js",
