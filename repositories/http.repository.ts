@@ -162,6 +162,7 @@ export abstract class HttpRepository {
     protected setHeaders(): Headers {
         const headers = new Headers();
         headers.set("content-type", "application/json");
+        headers.set("Pragma", "no-cache");
         return headers;
     }
 
