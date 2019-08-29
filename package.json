@@ -7,7 +7,9 @@
     "manupdate": "rm -rvf node_modules && npm install",
     "reinstall": "rm -rvf node_modules && npm install && npm dedupe && npm prune",
     "fullupdate": "ncu -u && npm run reinstall",
-    "check": "tslint --fix --project ./tsconfig.json && tsc",
+    "check": "tslint --fix --project ./tsconfig.json",
+    "build": "tsc",
+    "prepublishOnly" : "npm run check && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
