@@ -37,7 +37,7 @@ export abstract class HttpRepository {
         let primitive: string = "";
         try {
             let response = await fetch(
-                `${this.apiRoot}/${url}`,
+                `${url}`,
                 {
                     method: type,
                     body: typeof body !== "undefined" ? JSON.stringify(body) : void 0,
