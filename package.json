@@ -4,12 +4,12 @@
   "description": "Core classes for building app logic",
   "main": "index.js",
   "scripts": {
-    "packages:manupdate": "rm -rvf node_modules && npm install",
-    "packages:reinstall": "rm -rvf node_modules && npm install && npm dedupe && npm prune",
+    "packages:manupdate": "rm -rf node_modules && npm install",
+    "packages:reinstall": "rm -rf node_modules && npm install && npm dedupe && npm prune",
     "packages:fullupdate": "ncu -u && npm run packages:reinstall",
     "cs:eslint": "eslint --fix -c .eslintrc.js --ext .tsx,.ts,.jsx,.js ./src/",
     "build": "tsc",
-    "prepublishOnly": "npm run check && npm run build",
+    "prepublishOnly": "npm run cs:eslint && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
