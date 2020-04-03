@@ -4,10 +4,10 @@
   "description": "Core classes for building app logic",
   "main": "index.js",
   "scripts": {
-    "manupdate": "rm -rvf node_modules && npm install",
-    "reinstall": "rm -rvf node_modules && npm install && npm dedupe && npm prune",
-    "fullupdate": "ncu -u && npm run reinstall",
-    "check": "tslint --fix --project ./tsconfig.json",
+    "packages:manupdate": "rm -rvf node_modules && npm install",
+    "packages:reinstall": "rm -rvf node_modules && npm install && npm dedupe && npm prune",
+    "packages:fullupdate": "ncu -u && npm run packages:reinstall",
+    "cs:eslint": "eslint --fix -c .eslintrc.js --ext .tsx,.ts,.jsx,.js ./src/",
     "build": "tsc",
     "prepublishOnly": "npm run check && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -23,12 +23,11 @@
   },
   "homepage": "https://github.com/LabEG/webapps-core#readme",
   "dependencies": {
-    "ts-serializable": "^1.1.10",
+    "ts-serializable": "^1.1.11",
     "tslib": "^1.11.1"
   },
   "devDependencies": {
     "typescript": "^3.8.3",
-    "@labeg/code-style": "^1.0.18",
-    "tslint": "^6.1.0"
+    "@labeg/code-style": "^1.0.24"
   }
 }
