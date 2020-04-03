@@ -22,4 +22,5 @@ export class EventsService<TEnum> {
     ): void {
         this.events.removeEventListener(String(type), callback, options);
     }
+
 }

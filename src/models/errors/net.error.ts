@@ -12,4 +12,5 @@ export class NetError extends Error {
         this.name = "NetError";
         this.status = status;
     }
+
 }

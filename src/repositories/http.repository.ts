@@ -2,34 +2,34 @@ import { NetError } from "../models/errors/net.error";
 import { Serializable } from "ts-serializable";
 import { BackError } from "../models/errors/back.error";
 
-export type RepositoryMethod = "HEAD" | "GET" | "POST" | "DELETE" | "PUT";
+// eslint-disable-next-line @typescript-eslint/no-type-alias
+export type Methods = "HEAD" | "GET" | "POST" | "DELETE" | "PUT";
 
 export abstract class HttpRepository {
-
-    protected abstract apiRoot: string;
 
     // cache for all get and head request
     protected readonly requestCache: Map<string, [Function, Function][]> = new Map<string, [Function, Function][]>();
 
-    // tslint:disable-next-line:cyclomatic-complexity
+    protected abstract apiRoot: string;
+
+    // eslint-disable-next-line max-statements
     protected async customRequest<T>(
-        type: RepositoryMethod,
+        type: Methods,
         url: string,
         body: object | void,
-        modelConstructor: T): Promise<T> {
-
+        modelConstructor: T
+    ): Promise<T> {
         const isCacheableRequest = type === "GET" || type === "HEAD";
         const cacheKey = `${type} ${url}`;
 
         // *** setup cache
         if (isCacheableRequest) {
             if (this.requestCache.has(cacheKey)) {
-                return new Promise((res, rej) => {
-                    this.requestCache.get(cacheKey)!.push([res, rej]); // [res, rej] - its tuple
+                return await new Promise((res: () => void, rej: () => void) => {
+                    this.requestCache.get(cacheKey)?.push([res, rej]); // [res, rej] - its tuple
                 });
-            } else {
-                this.requestCache.set(cacheKey, []);
             }
+            this.requestCache.set(cacheKey, []);
         }
 
         // *** process request
@@ -49,12 +49,13 @@ export abstract class HttpRepository {
             primitive = await response.text();
         } catch (e) {
             if (isCacheableRequest && this.requestCache.has(cacheKey)) {
-                this.requestCache.get(cacheKey)!.forEach((tuple) => {
+                this.requestCache.get(cacheKey)?.forEach((tuple: [Function, Function]) => {
                     try {
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
                         tuple[1](e);
-                    } catch (e) {
-                        // tslint:disable-next-line:no-console
-                        console.error(e);
+                    } catch (re) {
+                        // eslint-disable-next-line no-console, @typescript-eslint/no-unsafe-call
+                        console.error(re);
                     }
                 });
                 this.requestCache.delete(cacheKey);
@@ -63,9 +64,9 @@ export abstract class HttpRepository {
         }
 
         let data: unknown = null;
-        if (Array.isArray(modelConstructor) && primitive.charAt(0) === "[") {
+        if (Array.isArray(modelConstructor) && primitive.startsWith("[")) {
             data = JSON.parse(primitive);
-        } else if (typeof modelConstructor === "object" && primitive.charAt(0) === "{") {
+        } else if (typeof modelConstructor === "object" && primitive.startsWith("{")) {
             data = JSON.parse(primitive);
         } else if (typeof modelConstructor === "string") {
             data = primitive;
@@ -78,11 +79,11 @@ export abstract class HttpRepository {
         } else {
             const error = new NetError(`Wrong returned type. Must by ${typeof modelConstructor} but return ${typeof primitive}`);
             if (isCacheableRequest && this.requestCache.has(cacheKey)) {
-                this.requestCache.get(cacheKey)!.forEach((tuple) => {
+                this.requestCache.get(cacheKey)?.forEach((tuple: [Function, Function]) => {
                     try {
                         tuple[1](error);
                     } catch (e) {
-                        // tslint:disable-next-line:no-console
+                        // eslint-disable-next-line no-console, @typescript-eslint/no-unsafe-call
                         console.error(e);
                     }
                 });
@@ -93,11 +94,11 @@ export abstract class HttpRepository {
 
         // *** restore cache
         if (isCacheableRequest && this.requestCache.has(cacheKey)) {
-            this.requestCache.get(cacheKey)!.forEach((tuple) => {
+            this.requestCache.get(cacheKey)?.forEach((tuple: [Function, Function]) => {
                 try {
                     tuple[0](data as T);
                 } catch (e) {
-                    // tslint:disable-next-line:no-console
+                    // eslint-disable-next-line no-console, @typescript-eslint/no-unsafe-call
                     console.error(e);
                 }
             });
@@ -107,56 +108,49 @@ export abstract class HttpRepository {
     }
 
     protected async customRequestAsT<T extends Serializable>(
-        type: RepositoryMethod,
+        type: Methods,
         url: string,
         body: object | void,
-        modelConstructor: new () => T): Promise<T> {
-
+        ModelConstructor: new () => T
+    ): Promise<T> {
         const model: Object = await this.customRequest(type, url, body, {});
-        return new modelConstructor().fromJSON(model);
+        return new ModelConstructor().fromJSON(model);
     }
 
     protected async customRequestAsArrayT<T extends Serializable>(
-        type: RepositoryMethod,
+        type: Methods,
         url: string,
         body: object | void,
-        modelConstructor: [new () => T]): Promise<T[]> {
-
+        modelConstructor: [new () => T]
+    ): Promise<T[]> {
         const models: Object[] = await this.customRequest(type, url, body, []);
-        return models.map((model) => new modelConstructor[0]().fromJSON(model));
+        return models.map((model: Object) => new modelConstructor[0]().fromJSON(model));
     }
 
     protected async handleError(response: Response): Promise<Response> {
-
         if (response.ok) {
             return response;
-        } else {
-
-            const body: string = await response.text();
-            let error: NetError | BackError | null = null;
-
-            if (response.status === 401) {
-
-                error = new NetError("Authorization exception", 401);
-
-            } else if (body.indexOf("<") === 0) { // java xml response
-
-                const match: RegExpMatchArray | null = /<b>description<\/b> <u>(.+?)<\/u>/g.exec(body);
-                error = new NetError(`${response.status} - ${(match && match[1] || response.statusText || "Ошибка не указана")}`);
-
-            } else if (body.indexOf("{") === 0) { // backend response
-
-                error = this.parseBackendError(response, body);
-
-            } else {
-                error = new NetError(`${response.status} - ${response.statusText}`);
-            }
-
-            error.status = response.status;
-            error.body = body;
-
-            throw error;
         }
+
+        const body: string = await response.text();
+        let error: NetError | BackError | null = null;
+
+        if (response.status === 401) {
+            error = new NetError("Authorization exception", 401);
+        } else if (body.startsWith("<")) { // java xml response
+            const match: RegExpMatchArray | null = (/<b>description<\/b> <u>(.+?)<\/u>/gu).exec(body);
+            error = new NetError(`${response.status} - ${((match?.[1] ?? response.statusText) || "Ошибка не указана")}`);
+        } else if (body.startsWith("{")) { // backend response
+            error = this.parseBackendError(response, body);
+        } else {
+            error = new NetError(`${response.status} - ${response.statusText}`);
+        }
+
+        error.status = response.status;
+        error.body = body;
+
+        // eslint-disable-next-line @typescript-eslint/no-throw-literal
+        throw error;
     }
 
     protected setHeaders(): Headers {
@@ -167,10 +161,11 @@ export abstract class HttpRepository {
     }
 
     protected parseBackendError(response: Response, body: string): BackError {
+        // override method, check on message property
+        const backError = new BackError(`${response.status} - ${response.statusText}`);
+        backError.body = body;
 
-        // todo: check on message property
-
-        return new BackError(`${response.status} - ${response.statusText}`);
+        return backError;
     }
 
 }

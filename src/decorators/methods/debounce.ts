@@ -1,14 +1,13 @@
+/* eslint-disable func-style */
 
 export function debounce(timeout: number = 500) {
-    return function(target: object, propertyKey: string, descriptor: PropertyDescriptor): PropertyDescriptor {
-
+    return function newMethod(target: object, propertyKey: string, descriptor: PropertyDescriptor): PropertyDescriptor {
         let timeOut: number | null = null;
 
         return {
             configurable: true,
             enumerable: descriptor.enumerable,
-            value(...arg: Object[]) {
-
+            value(...arg: Object[]): void {
                 if (timeOut) {
                     clearTimeout(timeOut);
                 }
@@ -16,12 +15,11 @@ export function debounce(timeout: number = 500) {
                 timeOut = window.setTimeout(
                     () => {
                         timeOut = null;
-                        // tslint:disable-next-line:no-invalid-this
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
                         descriptor.value.apply(this, arg);
                     },
                     timeout
                 );
-
             }
         };
     };

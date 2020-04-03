@@ -1,5 +1,5 @@
 
-import {jsonProperty, Serializable} from "ts-serializable";
+import { jsonProperty, Serializable } from "ts-serializable";
 import { PageMeta } from "./page-meta.vm";
 
 export class PagedList<TEntity> extends Serializable {
@@ -9,4 +9,5 @@ export class PagedList<TEntity> extends Serializable {
 
     @jsonProperty([Object])
     public elements: TEntity[] = [];
+
 }

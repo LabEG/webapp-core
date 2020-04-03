@@ -11,6 +11,7 @@ export enum PageListQueryFilterMethod {
 }
 
 export class PageListQueryFilter {
+
     public property: string = "";
     public method?: PageListQueryFilterMethod = PageListQueryFilterMethod.Equal;
     public value: string | number = "";
@@ -20,6 +21,7 @@ export class PageListQueryFilter {
         this.method = method;
         this.value = value;
     }
+
 }
 
 export enum PageListQuerySortDirection {
@@ -28,6 +30,7 @@ export enum PageListQuerySortDirection {
 }
 
 export class PageListQuerySort {
+
     public property: string = "";
     public direction?: PageListQuerySortDirection = PageListQuerySortDirection.Asc;
 
@@ -35,6 +38,7 @@ export class PageListQuerySort {
         this.property = property;
         this.direction = direction;
     }
+
 }
 
 export class PageListQuery {

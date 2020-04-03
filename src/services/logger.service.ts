@@ -6,44 +6,41 @@ export class LoggerService {
     public readonly events: EventTarget = document.createElement("div");
     public logLevel: LogLevels = LogLevels.ERROR;
 
-    public log(message: string, logLevel: LogLevels = LogLevels.INFO) {
+    public log(message: string, logLevel: LogLevels = LogLevels.INFO): void {
         if (logLevel <= this.logLevel) {
-            // tslint:disable-next-line:no-console
+            // eslint-disable-next-line no-console
             console.log(message);
             this.processError(message, void 0, logLevel);
         }
     }
 
-    public warning(message: string, logLevel: LogLevels = LogLevels.WARN) {
+    public warning(message: string, logLevel: LogLevels = LogLevels.WARN): void {
         if (logLevel <= this.logLevel) {
-            // tslint:disable-next-line:no-console
+            // eslint-disable-next-line no-console
             console.warn(message);
             this.processError(message, void 0, logLevel);
         }
     }
 
-    public error(message: string, error?: Error, logLevel: LogLevels = LogLevels.ERROR) {
+    public error(message: string, error?: Error, logLevel: LogLevels = LogLevels.ERROR): void {
         if (logLevel <= this.logLevel) {
-            // tslint:disable-next-line:no-console
+            // eslint-disable-next-line no-console
             console.error(message, error);
             this.processError(message, error, logLevel);
         }
     }
 
     protected processError(message: string, error?: Error, logLevel: LogLevels = LogLevels.ERROR): void {
-
         const clientError: ClientError = new ClientError(message, error);
 
-        this.events.dispatchEvent(new CustomEvent<ILoggerDetail>(
-            "error", { detail: { error, clientError } })
-        );
+        this.events.dispatchEvent(new CustomEvent<ILoggerDetail>("error", { detail: { error, clientError } }));
 
-        this.sendClientError(clientError);
-
+        this.sendClientError(clientError, logLevel);
     }
 
-    protected sendClientError(clientError: ClientError): void {
-        // todo: overide and process client error, example send to server or show modal with error
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars-experimental, @typescript-eslint/no-unused-vars
+    protected sendClientError(clientError: ClientError, logLevel: LogLevels): void {
+        // overide and process client error, example send to server or show modal with error
     }
 
 }
