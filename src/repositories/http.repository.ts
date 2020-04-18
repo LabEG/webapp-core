@@ -12,7 +12,7 @@ export abstract class HttpRepository {
 
     protected abstract apiRoot: string;
 
-    // eslint-disable-next-line max-statements
+    // eslint-disable-next-line max-statements, complexity
     protected async customRequest<T>(
         type: Methods,
         url: string,
@@ -65,9 +65,9 @@ export abstract class HttpRepository {
 
         let data: unknown = null;
         if (Array.isArray(modelConstructor) && primitive.startsWith("[")) {
-            data = JSON.parse(primitive);
+            data = JSON.parse(primitive) as object;
         } else if (typeof modelConstructor === "object" && primitive.startsWith("{")) {
-            data = JSON.parse(primitive);
+            data = JSON.parse(primitive) as object;
         } else if (typeof modelConstructor === "string") {
             data = primitive;
         } else if (typeof modelConstructor === "number") {

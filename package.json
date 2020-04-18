@@ -8,7 +8,7 @@
     "packages:reinstall": "rm -rf node_modules && npm install && npm dedupe && npm prune",
     "packages:fullupdate": "ncu -u && npm run packages:reinstall",
     "cs:eslint": "eslint --fix -c .eslintrc.js --ext .tsx,.ts,.jsx,.js ./src/",
-    "build": "tsc",
+    "build": "rm -rf dist/ && tsc",
     "prepublishOnly": "npm run cs:eslint && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

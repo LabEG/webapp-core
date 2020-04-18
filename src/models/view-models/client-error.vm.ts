@@ -61,7 +61,7 @@ export class ClientError {
         // eslint-disable-next-line guard-for-in
         for (const i in navigator) {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
-            varNavigator[i] = (navigator as any)[i];
+            varNavigator[i] = (navigator as any)[i] as object;
         }
         delete varNavigator.plugins;
         delete varNavigator.mimeTypes;

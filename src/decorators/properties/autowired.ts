@@ -22,8 +22,8 @@ export function singleton(constructor: ClassConstructor, params: ClassConstructo
 }
 
 export function autowired(target: object, propertyKey: string | symbol): void {
-    const type: ClassConstructor = (Reflect as any).getMetadata("design:type", target, propertyKey);
-    const paramTypes: ClassConstructor[] = (Reflect as any).getMetadata("design:paramtypes", type) || [];
+    const type: ClassConstructor = (Reflect as any).getMetadata("design:type", target, propertyKey) as ClassConstructor;
+    const paramTypes: ClassConstructor[] = (Reflect as any).getMetadata("design:paramtypes", type) as [] || [];
 
     Object.defineProperty(
         target,
