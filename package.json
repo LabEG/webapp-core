@@ -1,6 +1,6 @@
 {
   "name": "@labeg/webapp-core",
-  "version": "0.1.42",
+  "version": "0.1.43",
   "description": "Core classes for building app logic",
   "main": "index.js",
   "scripts": {
