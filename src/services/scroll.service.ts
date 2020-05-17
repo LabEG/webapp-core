@@ -2,9 +2,11 @@
 export class ScrollService {
 
     protected startTime: number = performance.now();
+
     protected scrollTime: number = 500;
 
     protected startScrollTop: number = 0;
+
     protected endScrollTop: number = 1;
 
     public scrollToId(elementId: string): void {

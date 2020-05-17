@@ -8,6 +8,7 @@ import { PagedList } from "../models/view-models/paged-list.vm";
 export abstract class CrudHttpRepository<T1 extends Serializable> extends HttpRepository implements ICrudRepository<T1> {
 
     protected abstract apiRoot: string;
+
     protected abstract modelConstructor: new () => T1;
 
     public async getById(id: string | number, ...keys: (string | number)[]): Promise<T1> {

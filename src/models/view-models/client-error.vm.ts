@@ -4,11 +4,17 @@ import { BackError } from "./../../models/errors/back.error";
 export class ClientError {
 
     public message: string | null = null;
+
     public browser: string | null = null;
+
     public browserHash: number = 0;
+
     public error: string | null = null;
+
     public errorHash: number = 0;
+
     public errorBody: string | null = null;
+
     public count: number = 1;
 
     constructor(

@@ -1,6 +1,7 @@
 export class BackError extends Error {
 
     public status: number | null = null;
+
     public body: string | null = null;
 
     constructor(m: string, status: number | null = null) {

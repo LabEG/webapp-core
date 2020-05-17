@@ -13,7 +13,9 @@ export enum PageListQueryFilterMethod {
 export class PageListQueryFilter {
 
     public property: string = "";
+
     public method?: PageListQueryFilterMethod = PageListQueryFilterMethod.Equal;
+
     public value: string | number = "";
 
     constructor(property: string, value: string | number, method: PageListQueryFilterMethod = PageListQueryFilterMethod.Equal) {
@@ -32,6 +34,7 @@ export enum PageListQuerySortDirection {
 export class PageListQuerySort {
 
     public property: string = "";
+
     public direction?: PageListQuerySortDirection = PageListQuerySortDirection.Asc;
 
     constructor(property: string, direction: PageListQuerySortDirection = PageListQuerySortDirection.Asc) {
@@ -44,9 +47,11 @@ export class PageListQuerySort {
 export class PageListQuery {
 
     public pageNumber?: number = 0;
+
     public pageSize?: number = 0;
 
     public filter?: PageListQueryFilter[] = [];
+
     public sort?: PageListQuerySort[] = [];
 
     public graph?: IGraphQuery = void 0;
