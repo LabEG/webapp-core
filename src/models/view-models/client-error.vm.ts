@@ -22,8 +22,8 @@ export class ClientError {
         error: Error | null = null
     ) {
         this.message = error ?
-            `Ошибка в ${message}. ${error.name}: ${error.message}` :
-            `Ошибка в ${message}`;
+            `Ошибка в ${String(message)}. ${error.name}: ${error.message}` :
+            `Ошибка в ${String(message)}`;
         this.fillBrowser();
         if (error) {
             this.fillError(error);
