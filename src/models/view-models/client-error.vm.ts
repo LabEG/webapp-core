@@ -17,6 +17,8 @@ export class ClientError {
 
     public count: number = 1;
 
+    public location: string = location.href;
+
     constructor(
         message: string | null = null,
         error: Error | null = null
