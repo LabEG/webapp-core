@@ -1,5 +1,5 @@
 import { NetError } from "../models/errors/net.error";
-import { Serializable } from "ts-serializable";
+import type { Serializable } from "ts-serializable";
 import { BackError } from "../models/errors/back.error";
 
 // eslint-disable-next-line @typescript-eslint/no-type-alias
@@ -47,13 +47,13 @@ export abstract class HttpRepository {
             );
             response = await this.handleError(response);
             primitive = await response.text();
-        } catch (e) {
+        } catch (e: unknown) {
             if (isCacheableRequest && this.requestCache.has(cacheKey)) {
                 this.requestCache.get(cacheKey)?.forEach((tuple: [Function, Function]) => {
                     try {
                         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
                         tuple[1](e);
-                    } catch (re) {
+                    } catch (re: unknown) {
                         // eslint-disable-next-line no-console, @typescript-eslint/no-unsafe-call
                         console.error(re);
                     }
@@ -82,7 +82,7 @@ export abstract class HttpRepository {
                 this.requestCache.get(cacheKey)?.forEach((tuple: [Function, Function]) => {
                     try {
                         tuple[1](error);
-                    } catch (e) {
+                    } catch (e: unknown) {
                         // eslint-disable-next-line no-console, @typescript-eslint/no-unsafe-call
                         console.error(e);
                     }
@@ -97,7 +97,7 @@ export abstract class HttpRepository {
             this.requestCache.get(cacheKey)?.forEach((tuple: [Function, Function]) => {
                 try {
                     tuple[0](data as T);
-                } catch (e) {
+                } catch (e: unknown) {
                     // eslint-disable-next-line no-console, @typescript-eslint/no-unsafe-call
                     console.error(e);
                 }

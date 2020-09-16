@@ -1,13 +1,13 @@
-import { IGraphQuery } from "./graph-query.vm";
+import type { IGraphQuery } from "./graph-query.vm";
 
 export enum PageListQueryFilterMethod {
-    Less,
-    LessOrEqual,
-    Equal,
-    GreatOrEqual,
-    Great,
-    Like,
-    ILike
+    Less = "Less",
+    LessOrEqual = "LessOrEqual",
+    Equal = "Equal",
+    GreatOrEqual = "GreatOrEqual",
+    Great = "Great",
+    Like = "Like",
+    ILike = "ILike"
 }
 
 export class PageListQueryFilter {
@@ -27,8 +27,8 @@ export class PageListQueryFilter {
 }
 
 export enum PageListQuerySortDirection {
-    Asc,
-    Desc
+    Asc = "Asc",
+    Desc = "Desc"
 }
 
 export class PageListQuerySort {
