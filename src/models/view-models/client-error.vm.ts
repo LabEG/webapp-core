@@ -65,7 +65,7 @@ export class ClientError {
 
     // navigator serialization
     protected fillBrowser(): void {
-        const varNavigator: { [key: string]: object } = {};
+        const varNavigator: Record<string, object> = {};
         // eslint-disable-next-line guard-for-in
         for (const i in navigator) {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any

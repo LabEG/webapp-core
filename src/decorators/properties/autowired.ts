@@ -10,7 +10,8 @@ const singletonsList: Map<new () => object, object> = new Map<new () => object, 
 
 export function singleton(constructor: ClassConstructor, params: ClassConstructor[]): object {
     if (singletonsList.has(constructor)) {
-        return singletonsList.get(constructor) as object;
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        return singletonsList.get(constructor)!;
     }
     const object = new constructor(...params.map((paramConstructor: ClassConstructor) => singleton(
         paramConstructor,

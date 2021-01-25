@@ -3,7 +3,7 @@ import type { Serializable } from "ts-serializable";
 import { BackError } from "../models/errors/back.error";
 
 // eslint-disable-next-line @typescript-eslint/no-type-alias
-export type Methods = "HEAD" | "GET" | "POST" | "DELETE" | "PUT";
+export type Methods = "DELETE" | "GET" | "HEAD" | "POST" | "PUT";
 
 export abstract class HttpRepository {
 
@@ -133,7 +133,7 @@ export abstract class HttpRepository {
         }
 
         const body: string = await response.text();
-        let error: NetError | BackError | null = null;
+        let error: BackError | NetError | null = null;
 
         if (response.status === 401) {
             error = new NetError("Authorization exception", 401);

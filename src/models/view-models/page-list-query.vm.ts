@@ -16,9 +16,9 @@ export class PageListQueryFilter {
 
     public method?: PageListQueryFilterMethod = PageListQueryFilterMethod.Equal;
 
-    public value: string | number = "";
+    public value: number | string = "";
 
-    constructor(property: string, value: string | number, method: PageListQueryFilterMethod = PageListQueryFilterMethod.Equal) {
+    constructor(property: string, value: number | string, method: PageListQueryFilterMethod = PageListQueryFilterMethod.Equal) {
         this.property = property;
         this.method = method;
         this.value = value;
