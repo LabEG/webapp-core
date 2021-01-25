@@ -25,7 +25,7 @@ export abstract class HttpRepository {
         // *** setup cache
         if (isCacheableRequest) {
             if (this.requestCache.has(cacheKey)) {
-                return await new Promise((res: () => void, rej: () => void) => {
+                return await new Promise((res: (val: T) => void, rej: () => void) => {
                     this.requestCache.get(cacheKey)?.push([res, rej]); // [res, rej] - its tuple
                 });
             }
