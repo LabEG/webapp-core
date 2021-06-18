@@ -1,11 +1,11 @@
 {
   "name": "@labeg/webapp-core",
-  "version": "0.1.18",
+  "version": "0.1.65",
   "description": "Core classes for building app logic",
   "main": "index.js",
   "scripts": {
     "cs:eslint": "eslint --fix -c .eslintrc.js --ext .tsx,.ts,.jsx,.js ./src/",
-    "build": "tsc",
+    "build": "rm -rf dist/ && tsc",
     "prepublishOnly": "npm run cs:eslint && npm run build && npm version patch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

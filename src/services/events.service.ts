@@ -6,7 +6,7 @@ export class EventsService<TEnum> {
     public addEventListener(
         type: TEnum,
         listener: EventListenerOrEventListenerObject | null,
-        options?: boolean | AddEventListenerOptions
+        options?: AddEventListenerOptions | boolean
     ): void {
         this.events.addEventListener(String(type), listener, options);
     }

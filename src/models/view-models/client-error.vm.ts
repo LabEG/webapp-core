@@ -4,20 +4,28 @@ import { BackError } from "./../../models/errors/back.error";
 export class ClientError {
 
     public message: string | null = null;
+
     public browser: string | null = null;
+
     public browserHash: number = 0;
+
     public error: string | null = null;
+
     public errorHash: number = 0;
+
     public errorBody: string | null = null;
+
     public count: number = 1;
+
+    public location: string = location.href;
 
     constructor(
         message: string | null = null,
         error: Error | null = null
     ) {
         this.message = error ?
-            `Ошибка в ${message}. ${error.name}: ${error.message}` :
-            `Ошибка в ${message}`;
+            `Ошибка в ${String(message)}. ${error.name}: ${error.message}` :
+            `Ошибка в ${String(message)}`;
         this.fillBrowser();
         if (error) {
             this.fillError(error);
@@ -57,11 +65,11 @@ export class ClientError {
 
     // navigator serialization
     protected fillBrowser(): void {
-        const varNavigator: { [key: string]: object } = {};
+        const varNavigator: Record<string, object> = {};
         // eslint-disable-next-line guard-for-in
         for (const i in navigator) {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
-            varNavigator[i] = (navigator as any)[i];
+            varNavigator[i] = (navigator as any)[i] as object;
         }
         delete varNavigator.plugins;
         delete varNavigator.mimeTypes;

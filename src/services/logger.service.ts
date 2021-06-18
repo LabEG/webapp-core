@@ -4,9 +4,10 @@ import { LogLevels } from "../models/enums/log-levels.enum";
 export class LoggerService {
 
     public readonly events: EventTarget = document.createElement("div");
-    public logLevel: LogLevels = LogLevels.ERROR;
 
-    public log(message: string, logLevel: LogLevels = LogLevels.INFO): void {
+    public logLevel: LogLevels = LogLevels.Error;
+
+    public log(message: string, logLevel: LogLevels = LogLevels.Info): void {
         if (logLevel <= this.logLevel) {
             // eslint-disable-next-line no-console
             console.log(message);
@@ -14,7 +15,7 @@ export class LoggerService {
         }
     }
 
-    public warning(message: string, logLevel: LogLevels = LogLevels.WARN): void {
+    public warning(message: string, logLevel: LogLevels = LogLevels.Warn): void {
         if (logLevel <= this.logLevel) {
             // eslint-disable-next-line no-console
             console.warn(message);
@@ -22,7 +23,7 @@ export class LoggerService {
         }
     }
 
-    public error(message: string, error?: Error, logLevel: LogLevels = LogLevels.ERROR): void {
+    public error(message: string, error?: Error, logLevel: LogLevels = LogLevels.Error): void {
         if (logLevel <= this.logLevel) {
             // eslint-disable-next-line no-console
             console.error(message, error);
@@ -30,7 +31,7 @@ export class LoggerService {
         }
     }
 
-    protected processError(message: string, error?: Error, logLevel: LogLevels = LogLevels.ERROR): void {
+    protected processError(message: string, error?: Error, logLevel: LogLevels = LogLevels.Error): void {
         const clientError: ClientError = new ClientError(message, error);
 
         this.events.dispatchEvent(new CustomEvent<ILoggerDetail>("error", { detail: { error, clientError } }));

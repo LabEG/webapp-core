@@ -1,9 +1,9 @@
 import { NetError } from "../models/errors/net.error";
-import { Serializable } from "ts-serializable";
+import type { Serializable } from "ts-serializable";
 import { BackError } from "../models/errors/back.error";
 
 // eslint-disable-next-line @typescript-eslint/no-type-alias
-export type Methods = "HEAD" | "GET" | "POST" | "DELETE" | "PUT";
+export type Methods = "DELETE" | "GET" | "HEAD" | "POST" | "PUT";
 
 export abstract class HttpRepository {
 
@@ -12,7 +12,7 @@ export abstract class HttpRepository {
 
     protected abstract apiRoot: string;
 
-    // eslint-disable-next-line max-statements
+    // eslint-disable-next-line max-statements, complexity
     protected async customRequest<T>(
         type: Methods,
         url: string,
@@ -25,7 +25,7 @@ export abstract class HttpRepository {
         // *** setup cache
         if (isCacheableRequest) {
             if (this.requestCache.has(cacheKey)) {
-                return await new Promise((res: () => void, rej: () => void) => {
+                return await new Promise((res: (val: T) => void, rej: () => void) => {
                     this.requestCache.get(cacheKey)?.push([res, rej]); // [res, rej] - its tuple
                 });
             }
@@ -47,13 +47,13 @@ export abstract class HttpRepository {
             );
             response = await this.handleError(response);
             primitive = await response.text();
-        } catch (e) {
+        } catch (e: unknown) {
             if (isCacheableRequest && this.requestCache.has(cacheKey)) {
                 this.requestCache.get(cacheKey)?.forEach((tuple: [Function, Function]) => {
                     try {
                         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
                         tuple[1](e);
-                    } catch (re) {
+                    } catch (re: unknown) {
                         // eslint-disable-next-line no-console, @typescript-eslint/no-unsafe-call
                         console.error(re);
                     }
@@ -65,9 +65,9 @@ export abstract class HttpRepository {
 
         let data: unknown = null;
         if (Array.isArray(modelConstructor) && primitive.startsWith("[")) {
-            data = JSON.parse(primitive);
+            data = JSON.parse(primitive) as object;
         } else if (typeof modelConstructor === "object" && primitive.startsWith("{")) {
-            data = JSON.parse(primitive);
+            data = JSON.parse(primitive) as object;
         } else if (typeof modelConstructor === "string") {
             data = primitive;
         } else if (typeof modelConstructor === "number") {
@@ -82,7 +82,7 @@ export abstract class HttpRepository {
                 this.requestCache.get(cacheKey)?.forEach((tuple: [Function, Function]) => {
                     try {
                         tuple[1](error);
-                    } catch (e) {
+                    } catch (e: unknown) {
                         // eslint-disable-next-line no-console, @typescript-eslint/no-unsafe-call
                         console.error(e);
                     }
@@ -97,7 +97,7 @@ export abstract class HttpRepository {
             this.requestCache.get(cacheKey)?.forEach((tuple: [Function, Function]) => {
                 try {
                     tuple[0](data as T);
-                } catch (e) {
+                } catch (e: unknown) {
                     // eslint-disable-next-line no-console, @typescript-eslint/no-unsafe-call
                     console.error(e);
                 }
@@ -133,7 +133,7 @@ export abstract class HttpRepository {
         }
 
         const body: string = await response.text();
-        let error: NetError | BackError | null = null;
+        let error: BackError | NetError | null = null;
 
         if (response.status === 401) {
             error = new NetError("Authorization exception", 401);
