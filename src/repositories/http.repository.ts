@@ -1,18 +1,20 @@
-import { NetError } from "../models/errors/net.error";
-import type { Serializable } from "ts-serializable";
-import { BackError } from "../models/errors/back.error";
+/* eslint-disable @typescript-eslint/no-invalid-void-type */
+/* eslint-disable @typescript-eslint/ban-types */
+import {NetError} from "../models/errors/net.error";
+import type {Serializable} from "ts-serializable";
+import {BackError} from "../models/errors/back.error";
 
 // eslint-disable-next-line @typescript-eslint/no-type-alias
 export type Methods = "DELETE" | "GET" | "HEAD" | "POST" | "PUT";
 
 export abstract class HttpRepository {
 
-    // cache for all get and head request
+    // Cache for all get and head request
     protected readonly requestCache: Map<string, [Function, Function][]> = new Map<string, [Function, Function][]>();
 
     protected abstract apiRoot: string;
 
-    // eslint-disable-next-line max-statements, complexity
+    // eslint-disable-next-line max-statements, complexity, max-lines-per-function
     protected async customRequest<T>(
         type: Methods,
         url: string,
@@ -22,17 +24,17 @@ export abstract class HttpRepository {
         const isCacheableRequest = type === "GET" || type === "HEAD";
         const cacheKey = `${type} ${url}`;
 
-        // *** setup cache
+        // *** Setup cache
         if (isCacheableRequest) {
             if (this.requestCache.has(cacheKey)) {
-                return await new Promise((res: (val: T) => void, rej: () => void) => {
+                return new Promise((res: (val: T) => void, rej: () => void) => {
                     this.requestCache.get(cacheKey)?.push([res, rej]); // [res, rej] - its tuple
                 });
             }
             this.requestCache.set(cacheKey, []);
         }
 
-        // *** process request
+        // *** Process request
         const headers = this.setHeaders();
         let primitive: string = "";
         try {
@@ -40,19 +42,19 @@ export abstract class HttpRepository {
                 `${url}`,
                 {
                     method: type,
-                    body: typeof body !== "undefined" ? JSON.stringify(body) : void 0,
+                    body: typeof body === "undefined" ? void 0 : JSON.stringify(body),
                     headers,
                     credentials: "include"
                 }
             );
             response = await this.handleError(response);
             primitive = await response.text();
-        } catch (e: unknown) {
+        } catch (fetchError: unknown) {
             if (isCacheableRequest && this.requestCache.has(cacheKey)) {
                 this.requestCache.get(cacheKey)?.forEach((tuple: [Function, Function]) => {
                     try {
                         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-                        tuple[1](e);
+                        tuple[1](fetchError);
                     } catch (re: unknown) {
                         // eslint-disable-next-line no-console, @typescript-eslint/no-unsafe-call
                         console.error(re);
@@ -60,7 +62,7 @@ export abstract class HttpRepository {
                 });
                 this.requestCache.delete(cacheKey);
             }
-            throw e;
+            throw fetchError;
         }
 
         let data: unknown = null;
@@ -82,9 +84,9 @@ export abstract class HttpRepository {
                 this.requestCache.get(cacheKey)?.forEach((tuple: [Function, Function]) => {
                     try {
                         tuple[1](error);
-                    } catch (e: unknown) {
+                    } catch (typeError: unknown) {
                         // eslint-disable-next-line no-console, @typescript-eslint/no-unsafe-call
-                        console.error(e);
+                        console.error(typeError);
                     }
                 });
                 this.requestCache.delete(cacheKey);
@@ -92,14 +94,14 @@ export abstract class HttpRepository {
             throw error;
         }
 
-        // *** restore cache
+        // *** Restore cache
         if (isCacheableRequest && this.requestCache.has(cacheKey)) {
             this.requestCache.get(cacheKey)?.forEach((tuple: [Function, Function]) => {
                 try {
                     tuple[0](data as T);
-                } catch (e: unknown) {
+                } catch (promiseError: unknown) {
                     // eslint-disable-next-line no-console, @typescript-eslint/no-unsafe-call
-                    console.error(e);
+                    console.error(promiseError);
                 }
             });
             this.requestCache.delete(cacheKey);
@@ -127,7 +129,8 @@ export abstract class HttpRepository {
         return models.map((model: Object) => new modelConstructor[0]().fromJSON(model));
     }
 
-    protected async handleError(response: Response): Promise<Response> {
+    // eslint-disable-next-line max-statements
+    protected async handleError (response: Response): Promise<Response> {
         if (response.ok) {
             return response;
         }
@@ -137,10 +140,10 @@ export abstract class HttpRepository {
 
         if (response.status === 401) {
             error = new NetError("Authorization exception", 401);
-        } else if (body.startsWith("<")) { // java xml response
+        } else if (body.startsWith("<")) { // Java xml response
             const match: RegExpMatchArray | null = (/<b>description<\/b> <u>(.+?)<\/u>/gu).exec(body);
             error = new NetError(`${response.status} - ${((match?.[1] ?? response.statusText) || "Ошибка не указана")}`);
-        } else if (body.startsWith("{")) { // backend response
+        } else if (body.startsWith("{")) { // Backend response
             error = this.parseBackendError(response, body);
         } else {
             error = new NetError(`${response.status} - ${response.statusText}`);
@@ -153,15 +156,15 @@ export abstract class HttpRepository {
         throw error;
     }
 
-    protected setHeaders(): Headers {
+    protected setHeaders (): Headers {
         const headers = new Headers();
         headers.set("content-type", "application/json");
         headers.set("Pragma", "no-cache");
         return headers;
     }
 
-    protected parseBackendError(response: Response, body: string): BackError {
-        // override method, check on message property
+    protected parseBackendError (response: Response, body: string): BackError {
+        // Override method, check on message property
         const backError = new BackError(`${response.status} - ${response.statusText}`);
         backError.body = body;
 

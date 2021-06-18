@@ -1,5 +1,5 @@
-import { ClientError } from "../models/view-models/client-error.vm";
-import { LogLevels } from "../models/enums/log-levels.enum";
+import {ClientError} from "../models/view-models/client-error.vm";
+import {LogLevels} from "../models/enums/log-levels.enum";
 
 export class LoggerService {
 
@@ -7,7 +7,7 @@ export class LoggerService {
 
     public logLevel: LogLevels = LogLevels.Error;
 
-    public log(message: string, logLevel: LogLevels = LogLevels.Info): void {
+    public log (message: string, logLevel: LogLevels = LogLevels.Info): void {
         if (logLevel <= this.logLevel) {
             // eslint-disable-next-line no-console
             console.log(message);
@@ -15,7 +15,7 @@ export class LoggerService {
         }
     }
 
-    public warning(message: string, logLevel: LogLevels = LogLevels.Warn): void {
+    public warning (message: string, logLevel: LogLevels = LogLevels.Warn): void {
         if (logLevel <= this.logLevel) {
             // eslint-disable-next-line no-console
             console.warn(message);
@@ -23,7 +23,7 @@ export class LoggerService {
         }
     }
 
-    public error(message: string, error?: Error, logLevel: LogLevels = LogLevels.Error): void {
+    public error (message: string, error?: Error, logLevel: LogLevels = LogLevels.Error): void {
         if (logLevel <= this.logLevel) {
             // eslint-disable-next-line no-console
             console.error(message, error);
@@ -31,22 +31,23 @@ export class LoggerService {
         }
     }
 
-    protected processError(message: string, error?: Error, logLevel: LogLevels = LogLevels.Error): void {
+    protected processError (message: string, error?: Error, logLevel: LogLevels = LogLevels.Error): void {
         const clientError: ClientError = new ClientError(message, error);
 
-        this.events.dispatchEvent(new CustomEvent<ILoggerDetail>("error", { detail: { error, clientError } }));
+        this.events.dispatchEvent(new CustomEvent<ILoggerDetail>("error", {detail: {error,
+            clientError}}));
 
         this.sendClientError(clientError, logLevel);
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars-experimental, @typescript-eslint/no-unused-vars
-    protected sendClientError(clientError: ClientError, logLevel: LogLevels): void {
-        // overide and process client error, example send to server or show modal with error
+    protected sendClientError (clientError: ClientError, logLevel: LogLevels): void {
+        // Overide and process client error, example send to server or show modal with error
     }
 
 }
 
 export interface ILoggerDetail {
-    error: Error | void;
+    error?: Error;
     clientError: ClientError;
 }

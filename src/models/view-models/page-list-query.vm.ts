@@ -1,4 +1,5 @@
-import type { IGraphQuery } from "./graph-query.vm";
+/* eslint-disable max-classes-per-file */
+import type {IGraphQuery} from "./graph-query.vm";
 
 export enum PageListQueryFilterMethod {
     Less = "Less",
@@ -18,7 +19,7 @@ export class PageListQueryFilter {
 
     public value: number | string = "";
 
-    constructor(property: string, value: number | string, method: PageListQueryFilterMethod = PageListQueryFilterMethod.Equal) {
+    public constructor (property: string, value: number | string, method: PageListQueryFilterMethod = PageListQueryFilterMethod.Equal) {
         this.property = property;
         this.method = method;
         this.value = value;
@@ -37,7 +38,7 @@ export class PageListQuerySort {
 
     public direction?: PageListQuerySortDirection = PageListQuerySortDirection.Asc;
 
-    constructor(property: string, direction: PageListQuerySortDirection = PageListQuerySortDirection.Asc) {
+    public constructor (property: string, direction: PageListQuerySortDirection = PageListQuerySortDirection.Asc) {
         this.property = property;
         this.direction = direction;
     }

@@ -1,5 +1,5 @@
-import { NetError } from "./../../models/errors/net.error";
-import { BackError } from "./../../models/errors/back.error";
+import {NetError} from "./../../models/errors/net.error";
+import {BackError} from "./../../models/errors/back.error";
 
 export class ClientError {
 
@@ -19,7 +19,7 @@ export class ClientError {
 
     public location: string = location.href;
 
-    constructor(
+    public constructor (
         message: string | null = null,
         error: Error | null = null
     ) {
@@ -33,43 +33,43 @@ export class ClientError {
         this.updateHashes();
     }
 
-    public updateHashes(): void {
+    public updateHashes (): void {
         this.browserHash = this.hashCode(this.browser ?? "");
         this.errorHash = this.hashCode(this.error ?? "");
     }
 
-    protected hashCode(text: string): number {
+    protected hashCode (text: string): number {
         let hash = 0;
-        let i = 0;
+        let index = 0;
         let chr = 0;
         if (text.length === 0) {
             return hash;
         }
-        for (i = 0; i < text.length; i += 1) {
-            chr = text.charCodeAt(i);
+        for (index = 0; index < text.length; index += 1) {
+            chr = text.charCodeAt(index);
             hash = ((hash << 5) - hash) + chr;
             hash |= 0; // Convert to 32bit integer
         }
         return hash;
     }
 
-    protected fillError(error: Error): void {
-        // error serialize
+    protected fillError (error: Error): void {
+        // Error serialize
         this.error = JSON.stringify(error, Object.getOwnPropertyNames(error));
 
-        // body
-        if ((error && error instanceof NetError) || error instanceof BackError) {
+        // Body
+        if (error instanceof NetError || error instanceof BackError) {
             this.errorBody = error.body;
         }
     }
 
-    // navigator serialization
-    protected fillBrowser(): void {
-        const varNavigator: Record<string, object> = {};
+    // Navigator serialization
+    protected fillBrowser (): void {
+        const varNavigator: Record<string, unknown> = {};
         // eslint-disable-next-line guard-for-in
-        for (const i in navigator) {
+        for (const index in navigator) {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
-            varNavigator[i] = (navigator as any)[i] as object;
+            varNavigator[index] = (navigator as any)[index];
         }
         delete varNavigator.plugins;
         delete varNavigator.mimeTypes;
