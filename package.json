@@ -20,11 +20,11 @@
   },
   "homepage": "https://github.com/LabEG/webapps-core#readme",
   "dependencies": {
-    "ts-serializable": "^2.0.34",
+    "ts-serializable": "^2.0.36",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
     "typescript": "^4.3.4",
-    "@labeg/code-style": "^2.0.14"
+    "@labeg/code-style": "^2.0.15"
   }
 }
