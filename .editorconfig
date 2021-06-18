@@ -1,5 +1,5 @@
 ﻿[*]
-end_of_line = crlf
+end_of_line = lf
 charset = utf-8
 
 # Code files
