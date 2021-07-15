@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "cs:eslint": "eslint --fix -c .eslintrc.js --ext .tsx,.ts,.jsx,.js ./src/",
-    "build": "rm -rf dist/ && tsc",
+    "build:esnext": "tsc",
+    "build:commonjs": "tsc --project tsconfig.build.commonjs.json",
+    "build:rename": "find ./dist/ -name \"*.js\" -exec rename .js .mjs {} +",
+    "build": "rm -rf dist/ && npm run build:esnext && npm run build:rename && npm run build:commonjs",
     "prepublishOnly": "npm run cs:eslint && npm run build && npm version patch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
