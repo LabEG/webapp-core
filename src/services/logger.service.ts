@@ -40,7 +40,7 @@ export class LoggerService {
         this.sendClientError(clientError, logLevel);
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars-experimental, @typescript-eslint/no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     protected sendClientError (clientError: ClientError, logLevel: LogLevels): void {
         // Overide and process client error, example send to server or show modal with error
     }

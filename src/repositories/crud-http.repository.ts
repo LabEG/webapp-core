@@ -16,7 +16,7 @@ export abstract class CrudHttpRepository<T1 extends Serializable> extends HttpRe
         keys.forEach((key: string): void => {
             url = url.replace(/\{.+\}/gu, String(key));
         });
-        return await this.customRequestAsT("GET", `${url}/${id}`, void 0, this.modelConstructor);
+        return this.customRequestAsT("GET", `${url}/${id}`, void 0, this.modelConstructor);
     }
 
     public async getAll (...keys: (number | string)[]): Promise<T1[]> {
@@ -24,7 +24,7 @@ export abstract class CrudHttpRepository<T1 extends Serializable> extends HttpRe
         keys.forEach((key: string): void => {
             url = url.replace(/\{.+\}/gu, String(key));
         });
-        return await this.customRequestAsArrayT("GET", `${url}/`, void 0, [this.modelConstructor]);
+        return this.customRequestAsArrayT("GET", `${url}/`, void 0, [this.modelConstructor]);
     }
 
     public async create (value: T1, ...keys: (number | string)[]): Promise<T1> {
@@ -32,7 +32,7 @@ export abstract class CrudHttpRepository<T1 extends Serializable> extends HttpRe
         keys.forEach((key: string): void => {
             url = url.replace(/\{.+\}/gu, String(key));
         });
-        return await this.customRequestAsT("POST", `${url}/`, value, this.modelConstructor);
+        return this.customRequestAsT("POST", `${url}/`, value, this.modelConstructor);
     }
 
     public async update (id: number | string, value: T1, ...keys: (number | string)[]): Promise<void> {
@@ -40,7 +40,7 @@ export abstract class CrudHttpRepository<T1 extends Serializable> extends HttpRe
         keys.forEach((key: string): void => {
             url = url.replace(/\{.+\}/gu, String(key));
         });
-        return await this.customRequest("PUT", `${url}/${id}`, value, void 0);
+        return this.customRequest("PUT", `${url}/${id}`, value, void 0);
     }
 
     public async delete (id: number | string, ...keys: (number | string)[]): Promise<void> {
@@ -48,16 +48,16 @@ export abstract class CrudHttpRepository<T1 extends Serializable> extends HttpRe
         keys.forEach((key: string): void => {
             url = url.replace(/\{.+\}/gu, String(key));
         });
-        return await this.customRequest("DELETE", `${url}/${id}`, void 0, void 0);
+        return this.customRequest("DELETE", `${url}/${id}`, void 0, void 0);
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars-experimental, @typescript-eslint/no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public async getGraphById (id: number | string, ...keys: (IGraphQuery | number | string)[]): Promise<T1> {
         await Promise.resolve();
         throw new Error("Method not implemented.");
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars-experimental, @typescript-eslint/no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public async getPaged (...keys: (PageListQuery | number | string)[]): Promise<PagedList<T1>> {
         await Promise.resolve();
         throw new Error("Method not implemented.");
