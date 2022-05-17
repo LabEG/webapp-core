@@ -1,0 +1,12 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "lib": [
+            "es2017",
+            "webworker"
+        ]
+    },
+    "include": [
+        "./src/core/scripts/pwa.serviceworker.ts"
+    ]
+}
