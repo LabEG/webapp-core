@@ -20,8 +20,8 @@ export class ScrollService {
         }
     }
 
+    // eslint-disable-next-line max-statements
     public scrollToElement (element: Element): void {
-
         // Measure scroll position
         const elemRect: DOMRect = element.getBoundingClientRect();
         this.startTime = performance.now();
@@ -71,7 +71,7 @@ export class ScrollService {
         }
     }
 
-    protected injectMeasurer(): void {
+    protected injectMeasurer (): void {
         const measurer: HTMLDivElement = document.createElement("div");
         measurer.style.position = "fixed";
         measurer.style.top = "0";
@@ -81,7 +81,7 @@ export class ScrollService {
         this.measurer = measurer;
     }
 
-    protected getNavBarHeight(): number {
+    protected getNavBarHeight (): number {
         const height = this.measurer?.getBoundingClientRect().height ?? 0;
         return height - window.innerHeight;
     }
