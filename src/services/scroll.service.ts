@@ -9,6 +9,10 @@ export class ScrollService {
 
     protected endScrollTop: number = 1;
 
+    protected measurer: HTMLDivElement | null = null;
+
+    protected rafTimer: number = 0;
+
     public scrollToId (elementId: string): void {
         const element: Element | null = document.querySelector(`#${elementId}`);
         if (element instanceof HTMLElement) {
@@ -17,26 +21,31 @@ export class ScrollService {
     }
 
     public scrollToElement (element: Element): void {
-        const navBarHeight = this.getNavBarHeight();
 
         // Measure scroll position
-        const elemRect: ClientRect = element.getBoundingClientRect();
+        const elemRect: DOMRect = element.getBoundingClientRect();
         this.startTime = performance.now();
         this.scrollTime = Math.abs(elemRect.top) / 2;
         let {scrollTop} = document.documentElement;
         scrollTop = scrollTop === 0 ? document.body.scrollTop : scrollTop;
         this.startScrollTop = scrollTop;
-        this.endScrollTop = this.startScrollTop - navBarHeight + elemRect.top;
 
-        this.animateScroll(element, navBarHeight);
+        if (this.rafTimer) {
+            cancelAnimationFrame(this.rafTimer);
+            this.rafTimer = 0;
+        } else {
+            this.injectMeasurer();
+        }
+        this.animateScroll(element);
     }
 
     // eslint-disable-next-line max-statements
-    protected animateScroll (element: Element, navBarHeight: number): void {
+    protected animateScroll (element: Element): void {
         // Check if element moved
-        const elemRect: ClientRect = element.getBoundingClientRect();
+        const elemRect: DOMRect = element.getBoundingClientRect();
         let {scrollTop} = document.documentElement;
         scrollTop = scrollTop === 0 ? document.body.scrollTop : scrollTop;
+        const navBarHeight = this.getNavBarHeight();
         this.endScrollTop = scrollTop - navBarHeight + elemRect.top;
 
         // Bezier animation
@@ -51,24 +60,39 @@ export class ScrollService {
             (3 * time * ((1 - time) ** 2) * p1) +
             (3 * (time ** 2) * (1 - time) * p2) +
             ((time ** 3) * p3);
+
         window.scrollTo(0, result); // Universal scroll
+
         if (time < 1) {
-            requestAnimationFrame(() => this.animateScroll(element, navBarHeight));
+            this.rafTimer = requestAnimationFrame(() => this.animateScroll(element));
+        } else {
+            this.rafTimer = 0;
+            this.removeMeasurer();
         }
     }
 
-    private getNavBarHeight (): number {
-        // Measure size of navigation bar
-        const measurer = document.createElement("div");
+    protected injectMeasurer(): void {
+        const measurer: HTMLDivElement = document.createElement("div");
         measurer.style.position = "fixed";
         measurer.style.top = "0";
         measurer.style.height = "100vh";
 
         document.body.appendChild(measurer);
-        const size = measurer.getBoundingClientRect();
-        document.body.removeChild(measurer);
+        this.measurer = measurer;
+    }
 
-        return size.height - window.innerHeight;
+    protected getNavBarHeight(): number {
+        const height = this.measurer?.getBoundingClientRect().height ?? 0;
+        return height - window.innerHeight;
+    }
+
+    protected removeMeasurer (): void {
+        if (this.measurer) {
+            document.body.removeChild(this.measurer);
+            this.measurer = null;
+        } else {
+            throw new Error("ScrollService measurer is not injected");
+        }
     }
 
 }
