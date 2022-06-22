@@ -3,7 +3,7 @@ import {LogLevels} from "../models/enums/log-levels.enum";
 
 export class LoggerService {
 
-    public readonly events: EventTarget = document.createElement("div");
+    public readonly events: EventTarget = new EventTarget();
 
     public logLevel: LogLevels = LogLevels.Error;
 

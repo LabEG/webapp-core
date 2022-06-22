@@ -1,7 +1,7 @@
 
 export class EventsService<TEnum> {
 
-    private readonly events: EventTarget = document.createElement("div");
+    protected events: EventTarget = new EventTarget();
 
     public addEventListener (
         type: TEnum,
