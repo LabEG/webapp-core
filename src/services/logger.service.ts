@@ -1,9 +1,10 @@
 import {ClientError} from "../models/view-models/client-error.vm";
 import {LogLevels} from "../models/enums/log-levels.enum";
+import {EventTargetJs} from "../helper/EventTarget";
 
 export class LoggerService {
 
-    public readonly events: EventTarget = new EventTarget();
+    public readonly events: EventTarget = new EventTargetJs();
 
     public logLevel: LogLevels = LogLevels.Error;
 

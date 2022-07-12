@@ -1,7 +1,8 @@
+import {EventTargetJs} from "../helper/EventTarget";
 
 export class EventsService<TEnum> {
 
-    protected events: EventTarget = new EventTarget();
+    protected events: EventTarget = new EventTargetJs();
 
     public addEventListener (
         type: TEnum,
