@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /**
- * Reimplementation because don't have polifill for old Safari
+ * Reimplementation because don't have polyfill for old Safari
  */
 export class EventTargetJs implements EventTarget {
 
