@@ -1,4 +1,4 @@
-import {EventTargetJs} from "../helper/EventTarget";
+import {EventTargetJs} from "../helper/EventTarget.js";
 
 export class EventsService<TEnum> {
 

@@ -1,9 +1,9 @@
-import {HttpRepository} from "./http.repository";
-import type {ICrudRepository} from "./icrud.repository";
+import {HttpRepository} from "./http.repository.js";
+import type {ICrudRepository} from "./icrud.repository.js";
 import type {Serializable} from "ts-serializable";
-import type {IGraphQuery} from "../models/view-models/graph-query.vm";
-import type {PageListQuery} from "../models/view-models/page-list-query.vm";
-import type {PagedList} from "../models/view-models/paged-list.vm";
+import type {IGraphQuery} from "../models/view-models/graph-query.vm.js";
+import type {PageListQuery} from "../models/view-models/page-list-query.vm.js";
+import type {PagedList} from "../models/view-models/paged-list.vm.js";
 
 export abstract class CrudHttpRepository<T1 extends Serializable> extends HttpRepository implements ICrudRepository<T1> {
 

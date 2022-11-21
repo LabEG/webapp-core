@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-invalid-void-type */
 /* eslint-disable @typescript-eslint/ban-types */
-import {NetError} from "../models/errors/net.error";
+import {NetError} from "../models/errors/net.error.js";
 import type {Serializable} from "ts-serializable";
-import {BackError} from "../models/errors/back.error";
+import {BackError} from "../models/errors/back.error.js";
 
 // eslint-disable-next-line @typescript-eslint/no-type-alias
 export type Methods = "DELETE" | "GET" | "HEAD" | "POST" | "PUT";

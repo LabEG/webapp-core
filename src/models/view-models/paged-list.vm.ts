@@ -1,6 +1,6 @@
 
 import {jsonProperty, Serializable} from "ts-serializable";
-import {PageMeta} from "./page-meta.vm";
+import {PageMeta} from "./page-meta.vm.js";
 
 export class PagedList<TEntity> extends Serializable {
 

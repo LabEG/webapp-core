@@ -1,6 +1,6 @@
-import {ClientError} from "../models/view-models/client-error.vm";
-import {LogLevels} from "../models/enums/log-levels.enum";
-import {EventTargetJs} from "../helper/EventTarget";
+import {ClientError} from "../models/view-models/client-error.vm.js";
+import {LogLevels} from "../models/enums/log-levels.enum.js";
+import {EventTargetJs} from "../helper/EventTarget.js";
 
 export class LoggerService {
 

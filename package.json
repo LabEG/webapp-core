@@ -1,14 +1,12 @@
 {
   "name": "@labeg/webapp-core",
-  "version": "0.1.80",
+  "version": "1.0.0",
   "description": "Core classes for building app logic",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "cs:eslint": "eslint --fix -c .eslintrc.js --ext .tsx,.ts,.jsx,.js ./src/",
-    "build:esnext": "tsc",
-    "build:commonjs": "tsc --project tsconfig.build.commonjs.json",
-    "build:rename": "find ./dist/ -name \"*.js\" -exec rename .js .mjs {} +",
-    "build": "rm -rf dist/ && npm run build:esnext && npm run build:rename && npm run build:commonjs",
+    "cs:eslint": "eslint --fix -c .eslintrc.cjs --ext .tsx,.ts,.jsx,.js ./src/",
+    "build": "rm -rf dist/ && tsc && node ./dist/index.js",
     "prepublishOnly": "npm run cs:eslint && npm run build && npm version patch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -23,11 +21,12 @@
   },
   "homepage": "https://github.com/LabEG/webapps-core#readme",
   "dependencies": {
-    "ts-serializable": "^3.0.2",
+    "ts-serializable": "^3.0.4",
     "tslib": "^2.4.1"
   },
   "devDependencies": {
+    "@labeg/code-style": "^2.0.50",
     "typescript": "^4.9.3",
-    "@labeg/code-style": "^2.0.49"
+    "reflect-metadata": "^0.1.13"
   }
 }

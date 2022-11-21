@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import {jsonProperty, Serializable} from "ts-serializable";
 
 export class PageMeta extends Serializable {

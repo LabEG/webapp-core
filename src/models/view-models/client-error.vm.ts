@@ -1,5 +1,5 @@
-import {NetError} from "./../../models/errors/net.error";
-import {BackError} from "./../../models/errors/back.error";
+import {NetError} from "./../../models/errors/net.error.js";
+import {BackError} from "./../../models/errors/back.error.js";
 
 export class ClientError {
 
