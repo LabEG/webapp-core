@@ -4,7 +4,7 @@
  */
 export class EventTargetJs implements EventTarget {
 
-    private readonly events: Map<string, EventListenerOrEventListenerObject[]> = new Map();
+    private readonly events = new Map<string, EventListenerOrEventListenerObject[]>();
 
     public addEventListener (
         type: string,
