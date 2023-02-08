@@ -5,13 +5,13 @@ export class ClientError {
 
     public message: string | null = null;
 
-    public browser: string | null = null;
+    public browser: object | null = null;
 
-    public browserHash: number = 0;
+    public browserHash: string = "0";
 
-    public error: string | null = null;
+    public error: Record<string, string | void> | null = null;
 
-    public errorHash: number = 0;
+    public errorHash: string = "0";
 
     public errorBody: string | null = null;
 
@@ -24,8 +24,8 @@ export class ClientError {
         error: Error | null = null
     ) {
         this.message = error ?
-            `Ошибка в ${String(message)}. ${error.name}: ${error.message}` :
-            `Ошибка в ${String(message)}`;
+            `ClientError ${String(message)}. ${error.name}: ${error.message}` :
+            `ClientError ${String(message)}`;
         this.fillBrowser();
         if (error) {
             this.fillError(error);
@@ -34,8 +34,11 @@ export class ClientError {
     }
 
     public updateHashes (): void {
-        this.browserHash = this.hashCode(this.browser ?? "");
-        this.errorHash = this.hashCode(this.error ?? "");
+        this.browserHash = String(this.hashCode(navigator.userAgent));
+        if (this.error) {
+            const text = [this.error.name, this.error.message, this.error.stack].join("").trim();
+            this.errorHash = String(this.hashCode(text ?? ""));
+        }
     }
 
     protected hashCode (text: string): number {
@@ -55,7 +58,11 @@ export class ClientError {
 
     protected fillError (error: Error): void {
         // Error serialize
-        this.error = JSON.stringify(error, Object.getOwnPropertyNames(error));
+        this.error = {
+            name: error.name,
+            message: error.message,
+            stack: error.stack
+        }
 
         // Body
         if (error instanceof NetError || error instanceof BackError) {
@@ -65,15 +72,15 @@ export class ClientError {
 
     // Navigator serialization
     protected fillBrowser (): void {
-        const varNavigator: Record<string, unknown> = {};
-        // eslint-disable-next-line guard-for-in
-        for (const index in navigator) {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
-            varNavigator[index] = (navigator as any)[index];
-        }
-        delete varNavigator.plugins;
-        delete varNavigator.mimeTypes;
-        this.browser = JSON.stringify(varNavigator);
+        this.browser = {
+            hardwareConcurrency: navigator.hardwareConcurrency,
+            language: navigator.language,
+            languages: navigator.languages,
+            userAgent: navigator.userAgent,
+            cookieEnabled: navigator.cookieEnabled,
+            doNotTrack: navigator.doNotTrack,
+            pdfViewerEnabled: navigator.pdfViewerEnabled
+        };
     }
 
 }
