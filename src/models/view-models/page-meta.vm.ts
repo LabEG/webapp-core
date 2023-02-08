@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-import-type-side-effects
 import "reflect-metadata";
 import {jsonProperty, Serializable} from "ts-serializable";
 

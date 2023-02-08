@@ -9,7 +9,7 @@ export class ClientError {
 
     public browserHash: string = "0";
 
-    public error: Record<string, string | void> | null = null;
+    public error: Record<string, string | undefined> | null = null;
 
     public errorHash: string = "0";
 
@@ -37,7 +37,7 @@ export class ClientError {
         this.browserHash = String(this.hashCode(navigator.userAgent));
         if (this.error) {
             const text = [this.error.name, this.error.message, this.error.stack].join("").trim();
-            this.errorHash = String(this.hashCode(text ?? ""));
+            this.errorHash = String(this.hashCode(text));
         }
     }
 
@@ -62,7 +62,7 @@ export class ClientError {
             name: error.name,
             message: error.message,
             stack: error.stack
-        }
+        };
 
         // Body
         if (error instanceof NetError || error instanceof BackError) {
