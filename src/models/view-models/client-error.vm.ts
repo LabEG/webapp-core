@@ -3,17 +3,15 @@ import {BackError} from "./../../models/errors/back.error.js";
 
 export class ClientError {
 
-    public message: string | null = null;
+    public message: string = "Empty message";
 
-    public browser: object | null = null;
+    public browser?: object = void 0;
 
     public browserHash: string = "0";
 
-    public error: Record<string, string | undefined> | null = null;
+    public error?: Record<string, string | undefined> = void 0;
 
     public errorHash: string = "0";
-
-    public errorBody: string | null = null;
 
     public count: number = 1;
 
@@ -57,17 +55,22 @@ export class ClientError {
     }
 
     protected fillError (error: Error): void {
+        let netError = {};
+
+        if (error instanceof NetError || error instanceof BackError) {
+            netError = {
+                status: error.status ?? void 0,
+                body: `Server response: \n${error.body ?? "Empty"}`
+            };
+        }
+
         // Error serialize
         this.error = {
             name: error.name,
             message: error.message,
-            stack: error.stack
+            stack: error.stack,
+            ...netError
         };
-
-        // Body
-        if (error instanceof NetError || error instanceof BackError) {
-            this.errorBody = error.body;
-        }
     }
 
     // Navigator serialization
