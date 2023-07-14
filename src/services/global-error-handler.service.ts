@@ -1,5 +1,5 @@
 
-import type {LoggerService} from "./logger.service";
+import {LoggerService} from "./logger.service";
 
 /**
  * For Angular
