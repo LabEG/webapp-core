@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/class-methods-use-this */
 import {HttpRepository} from "./http.repository.js";
 import type {ICrudRepository} from "./icrud.repository.js";
 import type {Serializable} from "ts-serializable";

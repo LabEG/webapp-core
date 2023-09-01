@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/class-methods-use-this */
 /* eslint-disable @typescript-eslint/no-invalid-void-type */
 /* eslint-disable @typescript-eslint/ban-types */
 import {NetError} from "../models/errors/net.error.js";

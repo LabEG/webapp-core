@@ -5,9 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "cs:eslint": "eslint --fix -c .eslintrc.cjs --ext .tsx,.ts,.jsx,.js ./src/",
+    "lint": "eslint --fix -c .eslintrc.cjs --ext .tsx,.ts,.jsx,.js ./src/",
     "build": "rm -rf dist/ && tsc && node ./dist/index.js",
-    "prepublishOnly": "npm run cs:eslint && npm run build && npm version patch",
+    "prepublishOnly": "npm run lint && npm run build && npm version patch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,12 +21,12 @@
   },
   "homepage": "https://github.com/LabEG/webapps-core#readme",
   "dependencies": {
-    "ts-serializable": "^3.0.36",
-    "tslib": "^2.6.0"
+    "ts-serializable": "^3.0.42",
+    "tslib": "^2.6.2"
   },
   "devDependencies": {
-    "@labeg/code-style": "^2.0.79",
-    "typescript": "^5.1.6",
+    "@labeg/code-style": "^3.0.5",
+    "typescript": "^5.2.2",
     "reflect-metadata": "^0.1.13"
   }
 }

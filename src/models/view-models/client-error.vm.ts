@@ -39,6 +39,7 @@ export class ClientError {
         }
     }
 
+    // eslint-disable-next-line @typescript-eslint/class-methods-use-this
     protected hashCode (text: string): number {
         let hash = 0;
         let index = 0;
