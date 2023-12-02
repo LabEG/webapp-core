@@ -15,7 +15,7 @@ export abstract class HttpRepository {
 
     protected abstract apiRoot: string;
 
-    // eslint-disable-next-line max-statements, complexity, max-lines-per-function
+    // eslint-disable-next-line max-statements, complexity, max-lines-per-function, @typescript-eslint/max-params
     protected async customRequest<T>(
         type: Methods,
         url: string,
@@ -110,6 +110,7 @@ export abstract class HttpRepository {
         return data as T;
     }
 
+    // eslint-disable-next-line @typescript-eslint/max-params
     protected async customRequestAsT<T extends Serializable>(
         type: Methods,
         url: string,
@@ -120,6 +121,7 @@ export abstract class HttpRepository {
         return new ModelConstructor().fromJSON(model);
     }
 
+    // eslint-disable-next-line @typescript-eslint/max-params
     protected async customRequestAsArrayT<T extends Serializable>(
         type: Methods,
         url: string,
