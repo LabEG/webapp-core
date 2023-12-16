@@ -144,6 +144,7 @@ export abstract class HttpRepository {
         if (response.status === 401) {
             error = new NetError("Authorization exception", 401);
         } else if (body.startsWith("<")) { // Java xml response
+            // eslint-disable-next-line prefer-named-capture-group
             const match: RegExpMatchArray | null = (/<b>description<\/b> <u>(.+?)<\/u>/gu).exec(body);
             error = new NetError(`${response.status} - ${((match?.[1] ?? response.statusText) || "Ошибка не указана")}`);
         } else if (body.startsWith("{")) { // Backend response

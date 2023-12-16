@@ -57,9 +57,9 @@ export class ScrollService {
         const p3: number = this.endScrollTop;
 
         const result = (((1 - time) ** 3) * p0) +
-            (3 * time * ((1 - time) ** 2) * p1) +
-            (3 * (time ** 2) * (1 - time) * p2) +
-            ((time ** 3) * p3);
+          (3 * time * ((1 - time) ** 2) * p1) +
+          (3 * (time ** 2) * (1 - time) * p2) +
+          ((time ** 3) * p3);
 
         window.scrollTo(0, result); // Universal scroll
 

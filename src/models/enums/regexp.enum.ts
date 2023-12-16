@@ -1,3 +1,5 @@
+/* eslint-disable prefer-named-capture-group */
+/* eslint-disable @stylistic/max-len */
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class Regexps {
 
