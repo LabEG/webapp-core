@@ -40,7 +40,7 @@ export abstract class HttpRepository {
         let primitive: string = "";
         try {
             let response = await fetch(
-                `${url}`,
+                url,
                 {
                     method: type,
                     body: typeof body === "undefined" ? void 0 : JSON.stringify(body),
