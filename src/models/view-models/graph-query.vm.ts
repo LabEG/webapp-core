@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/no-type-alias */
 
 export type IGraphQueryDeep5 = Record<string, object | null>;

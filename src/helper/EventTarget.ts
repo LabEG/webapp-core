@@ -9,7 +9,7 @@ export class EventTargetJs implements EventTarget {
     public addEventListener (
         type: string,
         callback: EventListenerOrEventListenerObject | null,
-        _options?: AddEventListenerOptions | boolean | undefined
+        _options?: AddEventListenerOptions | boolean
     ): void {
         if (!this.events.has(type)) {
             this.events.set(type, []);
@@ -33,7 +33,7 @@ export class EventTargetJs implements EventTarget {
     public removeEventListener (
         type: string,
         callback: EventListenerOrEventListenerObject | null,
-        _options?: EventListenerOptions | boolean | undefined
+        _options?: EventListenerOptions | boolean
     ): void {
         const events = this.events.get(type);
         if (callback !== null && events?.includes(callback) === true) {

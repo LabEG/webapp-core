@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable func-style */
 
 export function debounce (timeout: number = 500) {
@@ -8,7 +7,7 @@ export function debounce (timeout: number = 500) {
         return {
             configurable: true,
             enumerable: descriptor.enumerable,
-            value (...arg: Object[]): void {
+            value (...arg: object[]): void {
                 if (timeOut) {
                     clearTimeout(timeOut);
                 }

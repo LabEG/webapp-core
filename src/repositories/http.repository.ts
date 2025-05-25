@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-function-type */
 /* eslint-disable @typescript-eslint/class-methods-use-this */
 /* eslint-disable @typescript-eslint/no-invalid-void-type */
-/* eslint-disable @typescript-eslint/ban-types */
 import {NetError} from "../models/errors/net.error.js";
 import type {Serializable} from "ts-serializable";
 import {BackError} from "../models/errors/back.error.js";
@@ -117,7 +118,7 @@ export abstract class HttpRepository {
         body: object | void,
         ModelConstructor: new () => T
     ): Promise<T> {
-        const model: Object = await this.customRequest(type, url, body, {});
+        const model: object = await this.customRequest(type, url, body, {});
         return new ModelConstructor().fromJSON(model);
     }
 
@@ -128,8 +129,8 @@ export abstract class HttpRepository {
         body: object | void,
         modelConstructor: [new () => T]
     ): Promise<T[]> {
-        const models: Object[] = await this.customRequest(type, url, body, []);
-        return models.map((model: Object) => new modelConstructor[0]().fromJSON(model));
+        const models: object[] = await this.customRequest(type, url, body, []);
+        return models.map((model: object) => new modelConstructor[0]().fromJSON(model));
     }
 
     // eslint-disable-next-line max-statements
@@ -156,7 +157,6 @@ export abstract class HttpRepository {
         error.status = response.status;
         error.body = body;
 
-        // eslint-disable-next-line @typescript-eslint/no-throw-literal
         throw error;
     }
 
